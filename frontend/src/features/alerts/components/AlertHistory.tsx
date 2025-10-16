@@ -3,12 +3,14 @@
  * Affiche timeline des déclenchements avec filtres et statistiques
  */
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAlertHistory } from '../hooks/useAlertHistory';
-import { Bell, CheckCircle, XCircle, Clock } from 'lucide-react';
+import { Bell, CheckCircle, XCircle, Clock, ArrowLeft } from 'lucide-react';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
 export const AlertHistory = () => {
+  const navigate = useNavigate();
   const [filterType, setFilterType] = useState<string>('');
   const [filterSeverity, setFilterSeverity] = useState<string>('');
 
@@ -64,11 +66,22 @@ export const AlertHistory = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900">Historique des Alertes</h1>
-        <p className="text-gray-600 mt-2">
-          Consultez l'historique de tous les déclenchements d'alertes
-        </p>
+      <div className="flex items-start justify-between">
+        <div>
+          <div className="flex items-center gap-3 mb-2">
+            <button
+              onClick={() => navigate('/alertes')}
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              title="Retour aux alertes"
+            >
+              <ArrowLeft className="w-5 h-5 text-gray-600" />
+            </button>
+            <h1 className="text-3xl font-bold text-gray-900">Historique des Alertes</h1>
+          </div>
+          <p className="text-gray-600 ml-14">
+            Consultez l'historique de tous les déclenchements d'alertes
+          </p>
+        </div>
       </div>
 
       {/* Stats Cards */}

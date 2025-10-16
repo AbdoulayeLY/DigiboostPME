@@ -2,12 +2,14 @@
  * Composant principal de gestion des alertes
  */
 import { useState } from 'react';
-import { Bell, BellOff, Edit, Plus, Trash2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Bell, BellOff, Edit, Plus, Trash2, Clock } from 'lucide-react';
 import { useAlerts } from '../hooks/useAlerts';
 import { AlertConfigDialog } from './AlertConfigDialog';
 import type { Alert } from '@/api/alerts';
 
 export const AlertsList = () => {
+  const navigate = useNavigate();
   const { alerts, isLoading, deleteAlert, toggleAlert } = useAlerts();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingAlert, setEditingAlert] = useState<Alert | null>(null);
@@ -75,13 +77,22 @@ export const AlertsList = () => {
             Configurez vos alertes pour être notifié en temps réel
           </p>
         </div>
-        <button
-          onClick={handleCreate}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-        >
-          <Plus className="w-5 h-5" />
-          Nouvelle Alerte
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={() => navigate('/alertes/history')}
+            className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+          >
+            <Clock className="w-5 h-5" />
+            Historique
+          </button>
+          <button
+            onClick={handleCreate}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            <Plus className="w-5 h-5" />
+            Nouvelle Alerte
+          </button>
+        </div>
       </div>
 
       {/* Stats cards */}
