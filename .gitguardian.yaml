@@ -1,0 +1,35 @@
+# Configuration GitGuardian
+# Ignore les faux positifs pour les fichiers de documentation et exemples
+
+version: 2
+
+paths-ignore:
+  # Documentation et prompts (contiennent des exemples pédagogiques)
+  - .claude/prompts/**/*.md
+  - .claude/context/**/*.md
+  - .claude/specs/**/*.md
+  - docs/**/*.md
+  - README.md
+  - backend/README.md
+  - frontend/README.md
+
+  # Fichiers d'exemples (contiennent des placeholders)
+  - "**/.env.example"
+  - "**/config.example.*"
+
+# Ignorer les détections spécifiques
+matches-ignore:
+  # SMTP dans fichiers de configuration avec placeholders vides
+  - name: SMTP credentials
+    match: SMTP_PASSWORD
+    paths:
+      - backend/app/config.py  # Valeurs par défaut vides
+      - backend/.env.example    # Template avec placeholders
+      - .claude/prompts/**      # Documentation pédagogique
+
+  # SECRET_KEY dans fichiers d'exemples
+  - name: Generic High Entropy Secret
+    match: SECRET_KEY
+    paths:
+      - backend/.env.example
+      - backend/app/config.py
