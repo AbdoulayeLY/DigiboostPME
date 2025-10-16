@@ -76,6 +76,14 @@ export interface AlertTestResult {
   sent_email: boolean;
 }
 
+export interface AlertHistoryFilters {
+  alert_id?: string;
+  alert_type?: string;
+  severity?: string;
+  limit?: number;
+  offset?: number;
+}
+
 /**
  * API Client pour les alertes
  */

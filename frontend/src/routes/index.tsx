@@ -11,6 +11,7 @@ import VentesPage from '@/pages/VentesPage';
 import FournisseursPage from '@/pages/FournisseursPage';
 import PrevisionsPage from '@/pages/PrevisionsPage';
 import AlertesPage from '@/pages/AlertesPage';
+import AlertHistoryPage from '@/pages/AlertHistoryPage';
 import ParametresPage from '@/pages/ParametresPage';
 
 export const router = createBrowserRouter([
@@ -52,6 +53,10 @@ export const router = createBrowserRouter([
           {
             path: '/alertes',
             element: <AlertesPage />,
+          },
+          {
+            path: '/alertes/history',
+            element: <AlertHistoryPage />,
           },
           {
             path: '/parametres',
