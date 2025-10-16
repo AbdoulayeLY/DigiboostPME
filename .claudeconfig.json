@@ -1,0 +1,330 @@
+{
+  "project": {
+    "name": "Digiboost PME",
+    "description": "Plateforme d'intelligence supply chain pour PME sénégalaises",
+    "version": "1.0.0-MVP",
+    "type": "fullstack",
+    "created": "2025-10-15",
+    "team": {
+      "ceo": "Responsable stratégie et produit",
+      "cto": "Responsable architecture et développement"
+    }
+  },
+  
+  "context": {
+    "priority_files": [
+      ".claude/context/00-project-overview.md",
+      ".claude/context/01-architecture.md",
+      ".claude/context/02-data-models.md",
+      ".claude/context/03-api-standards.md",
+      ".claude/context/04-frontend-patterns.md"
+    ],
+    "specs": [
+      ".claude/specs/supply_chain_spec_v3.md"
+    ],
+    "prompts_directory": ".claude/prompts/",
+    "always_read_before_coding": [
+      ".claude/context/00-project-overview.md",
+      "File specific to the current task from .claude/context/"
+    ]
+  },
+  
+  "tech_stack": {
+    "backend": {
+      "language": "Python 3.11+",
+      "framework": "FastAPI",
+      "orm": "SQLAlchemy 2.0",
+      "database": "PostgreSQL 14+",
+      "cache": "Redis 7+",
+      "task_queue": "Celery",
+      "migrations": "Alembic"
+    },
+    "frontend": {
+      "language": "TypeScript",
+      "framework": "React 18",
+      "build_tool": "Vite",
+      "styling": "TailwindCSS",
+      "ui_library": "Shadcn/ui",
+      "state_management": {
+        "server": "TanStack Query (React Query)",
+        "client": "Zustand"
+      },
+      "routing": "React Router 6",
+      "charts": "Recharts",
+      "forms": "React Hook Form + Zod"
+    },
+    "infrastructure": {
+      "containerization": "Docker + Docker Compose",
+      "web_server": "Nginx",
+      "ssl": "Certbot (Let's Encrypt)",
+      "monitoring": "Prometheus + Grafana",
+      "logging": "ELK Stack"
+    }
+  },
+  
+  "coding_rules": {
+    "general": [
+      "ALWAYS filter queries by tenant_id (multi-tenant isolation)",
+      "Follow feature-based architecture (not layer-based)",
+      "Implement ONLY what is specified in prompts (no over-engineering)",
+      "Use type hints for all Python functions",
+      "Use TypeScript strict mode for frontend",
+      "Add docstrings (Google style) for all Python functions",
+      "Add JSDoc comments for complex TypeScript functions",
+      "Write tests for critical business logic"
+    ],
+    "backend": [
+      "Use Pydantic for request/response validation",
+      "Use dependency injection (FastAPI Depends)",
+      "Always use prepared statements (SQLAlchemy ORM)",
+      "Implement pagination for list endpoints (default: 20, max: 100)",
+      "Add proper error handling with HTTPException",
+      "Use Celery for async tasks (emails, reports, alerts)",
+      "Cache expensive queries (Redis, 5 min default)",
+      "Log all errors with context (tenant_id, user_id, timestamp)"
+    ],
+    "frontend": [
+      "Use React Query for all API calls",
+      "Use Zustand ONLY for auth and UI global state",
+      "Implement loading, error, and empty states",
+      "Use React Hook Form + Zod for form validation",
+      "Debounce search inputs (500ms)",
+      "Lazy load routes with React.lazy()",
+      "Optimize images (WebP format)",
+      "Target bundle size < 500KB",
+      "Ensure mobile-first responsive design",
+      "Implement offline-first with Service Worker"
+    ],
+    "security": [
+      "NEVER expose sensitive data in logs",
+      "ALWAYS validate and sanitize user inputs",
+      "Use JWT with short expiration (30 min access, 7 days refresh)",
+      "Implement rate limiting (100 req/min per user)",
+      "Hash passwords with bcrypt",
+      "Use HTTPS only in production",
+      "Set secure HTTP headers (CORS, CSP, etc.)",
+      "Log all authentication attempts"
+    ],
+    "performance": [
+      "Use database indexes on frequently queried columns",
+      "Implement materialized views for complex dashboard queries",
+      "Use connection pooling (max 20 connections)",
+      "Cache dashboard data (5 min)",
+      "Optimize N+1 queries with eager loading",
+      "Compress API responses (gzip)",
+      "Use CDN for static assets",
+      "Implement query result pagination"
+    ]
+  },
+  
+  "file_structure": {
+    "backend": {
+      "root": "backend/",
+      "app_dir": "backend/app/",
+      "models": "backend/app/models/",
+      "schemas": "backend/app/schemas/",
+      "api": "backend/app/api/v1/",
+      "services": "backend/app/services/",
+      "tasks": "backend/app/tasks/",
+      "core": "backend/app/core/",
+      "tests": "backend/tests/"
+    },
+    "frontend": {
+      "root": "frontend/",
+      "src": "frontend/src/",
+      "features": "frontend/src/features/",
+      "components": "frontend/src/components/",
+      "hooks": "frontend/src/hooks/",
+      "api": "frontend/src/api/",
+      "stores": "frontend/src/stores/",
+      "types": "frontend/src/types/"
+    }
+  },
+  
+  "naming_conventions": {
+    "files": {
+      "python": "snake_case.py (user_service.py)",
+      "typescript": "PascalCase.tsx for components, camelCase.ts for utils",
+      "tests": "test_*.py or *.test.tsx"
+    },
+    "variables": {
+      "python": "snake_case",
+      "typescript": "camelCase",
+      "constants": "UPPER_SNAKE_CASE"
+    },
+    "functions": {
+      "python": "snake_case",
+      "typescript": "camelCase"
+    },
+    "classes": {
+      "python": "PascalCase",
+      "typescript": "PascalCase"
+    },
+    "components": {
+      "react": "PascalCase"
+    }
+  },
+  
+  "api_conventions": {
+    "base_url": "/api/v1",
+    "authentication": "JWT Bearer token in Authorization header",
+    "response_format": {
+      "success": {
+        "data": "payload",
+        "message": "optional message",
+        "timestamp": "ISO 8601"
+      },
+      "error": {
+        "error": {
+          "code": "ERROR_CODE",
+          "message": "human-readable message",
+          "details": "optional details array"
+        },
+        "timestamp": "ISO 8601"
+      }
+    },
+    "pagination": {
+      "query_params": "?page=1&page_size=20",
+      "response_includes": "pagination object with page, total_items, etc."
+    },
+    "filtering": {
+      "query_params": "?search=text&category_id=uuid&is_active=true"
+    },
+    "sorting": {
+      "query_params": "?sort=name or ?sort=-created_at (- for desc)"
+    }
+  },
+  
+  "testing": {
+    "backend": {
+      "framework": "pytest",
+      "coverage_target": "> 80%",
+      "test_types": [
+        "unit tests (business logic)",
+        "integration tests (API endpoints)",
+        "database tests (models, queries)"
+      ],
+      "run_command": "pytest tests/ -v --cov=app"
+    },
+    "frontend": {
+      "framework": "Vitest + React Testing Library",
+      "coverage_target": "> 70%",
+      "test_types": [
+        "component tests",
+        "hook tests",
+        "integration tests"
+      ],
+      "run_command": "npm run test"
+    },
+    "e2e": {
+      "framework": "Playwright",
+      "test_types": [
+        "critical user flows",
+        "authentication",
+        "dashboard loading",
+        "CRUD operations"
+      ],
+      "run_command": "npm run test:e2e"
+    }
+  },
+  
+  "deployment": {
+    "environments": {
+      "development": {
+        "url": "http://localhost:8000",
+        "docker_compose": "docker-compose.yml"
+      },
+      "production": {
+        "url": "https://api.digiboost.sn",
+        "docker_compose": "docker-compose.prod.yml",
+        "server": "Hetzner CX31 (16GB RAM, 4 vCores)",
+        "monitoring": "Grafana + Prometheus"
+      }
+    },
+    "ci_cd": {
+      "platform": "GitHub Actions (future)",
+      "steps": [
+        "lint",
+        "test",
+        "build",
+        "deploy"
+      ]
+    }
+  },
+  
+  "development_workflow": {
+    "git_branch_strategy": "GitFlow",
+    "commit_message_format": "type(scope): message",
+    "pull_request_required": true,
+    "code_review_required": true,
+    "sprint_duration": "1-2 weeks",
+    "standup_frequency": "daily"
+  },
+  
+  "documentation": {
+    "api_docs": "OpenAPI/Swagger auto-generated at /docs",
+    "user_guide": "docs/guide-utilisateur.md",
+    "deployment_guide": "docs/deployment-guide.md",
+    "architecture_diagrams": "docs/architecture/",
+    "changelog": "CHANGELOG.md"
+  },
+  
+  "critical_reminders": [
+    "⚠️ ALWAYS filter by tenant_id in database queries",
+    "⚠️ NEVER commit secrets to git (use .env)",
+    "⚠️ ALWAYS validate user inputs (backend + frontend)",
+    "⚠️ Implement proper error handling everywhere",
+    "⚠️ Test multi-tenant isolation thoroughly",
+    "⚠️ Optimize for low bandwidth (Senegal context)",
+    "⚠️ Ensure offline-first PWA functionality",
+    "⚠️ Log errors with full context for debugging"
+  ],
+  
+  "senegal_context": {
+    "constraints": [
+      "Intermittent 3G/4G connectivity",
+      "Low-end smartphones (2-4GB RAM)",
+      "High data costs (1GB ≈ 1000 FCFA)",
+      "Limited technical literacy of users"
+    ],
+    "solutions": [
+      "PWA with offline-first architecture",
+      "Aggressive caching strategy",
+      "Image optimization (WebP)",
+      "Bundle size < 500KB",
+      "WhatsApp integration for alerts",
+      "Simple, intuitive UI",
+      "French language support"
+    ],
+    "target_users": [
+      "Small business owners (épiceries, boutiques)",
+      "Shop managers with limited tech skills",
+      "Sales staff using mobile devices"
+    ]
+  },
+  
+  "success_metrics": {
+    "adoption": {
+      "daily_active_users_percent": "> 80%",
+      "whatsapp_alerts_read_rate": "> 90%",
+      "monthly_reports_generated": "> 70% of users"
+    },
+    "business_impact": {
+      "stock_out_reduction": "> 50%",
+      "service_rate_improvement": "> 15%",
+      "capital_reduction": "> 30%",
+      "margin_improvement": "> 20%"
+    },
+    "technical": {
+      "uptime": "> 99.5%",
+      "dashboard_load_time_p95": "< 3 seconds",
+      "api_error_rate": "< 1%",
+      "alert_delivery_time": "< 2 minutes"
+    },
+    "satisfaction": {
+      "nps": "> 50",
+      "recommendation_rate": "> 70%",
+      "paid_conversion_after_trial": "> 80%"
+    }
+  }
+}

@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  # PostgreSQL local commenté - utilisation de la base externe configurée dans .env
+  # Décommenter si vous voulez utiliser PostgreSQL en local
+  # postgres:
+  #   image: postgres:15-alpine
+  #   container_name: digiboost_postgres
+  #   environment:
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: postgres
+  #     POSTGRES_DB: digiboost_dev
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U postgres"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+  #   networks:
+  #     - digiboost_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: digiboost_redis
+    command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - digiboost_network
+
+volumes:
+  # postgres_data:  # Commenté car PostgreSQL externe
+  redis_data:
+
+networks:
+  digiboost_network:
+    driver: bridge
