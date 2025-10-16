@@ -248,7 +248,7 @@ class AlertService:
     def _is_duplicate(self, alert_id: UUID, product_ids: List[str]) -> bool:
         """
         Vérifier si une alerte similaire a été envoyée récemment.
-        Déduplication: même alerte + mêmes produits dans les 2 dernières heures.
+        Déduplication: même alerte + mêmes produits dans les 30 dernières minutes.
 
         Args:
             alert_id: UUID de l'alerte
@@ -257,13 +257,13 @@ class AlertService:
         Returns:
             True si duplicate, False sinon
         """
-        two_hours_ago = datetime.utcnow() - timedelta(hours=2)
+        thirty_minutes_ago = datetime.utcnow() - timedelta(minutes=30)
 
-        # Chercher alertes récentes (2h)
+        # Chercher alertes récentes (30 min)
         recent = self.db.query(AlertHistory).filter(
             and_(
                 AlertHistory.alert_id == alert_id,
-                AlertHistory.triggered_at >= two_hours_ago
+                AlertHistory.triggered_at >= thirty_minutes_ago
             )
         ).first()
 
@@ -273,6 +273,15 @@ class AlertService:
         # Comparer les produits concernés
         recent_products = set(recent.details.get("product_ids", []))
         current_products = set(product_ids)
+
+        # Pour les alertes sans produits (ex: BAISSE_TAUX_SERVICE),
+        # considérer comme duplicate si même alerte dans les 30 dernières minutes
+        if len(recent_products) == 0 and len(current_products) == 0:
+            logger.debug(
+                f"Duplicate detected for alert {alert_id}: "
+                f"same alert type without products within 30 minutes"
+            )
+            return True
 
         # Si 80%+ des produits sont identiques, considérer comme duplicate
         if len(recent_products) > 0:
