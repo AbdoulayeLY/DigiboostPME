@@ -1,15 +1,10 @@
 /**
- * Page Alertes (placeholder)
+ * Page Alertes - Interface de gestion des alertes
  */
+import { AlertsList } from '@/features/alerts/components/AlertsList';
+
 export const AlertesPage = () => {
-  return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-bold text-gray-900">Alertes et Notifications</h1>
-      <div className="bg-white p-6 rounded-lg shadow">
-        <p className="text-gray-600">Page en cours de construction...</p>
-      </div>
-    </div>
-  );
+  return <AlertsList />;
 };
 
 export default AlertesPage;

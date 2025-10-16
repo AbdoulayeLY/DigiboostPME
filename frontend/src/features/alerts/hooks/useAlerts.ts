@@ -3,7 +3,7 @@
  */
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { alertsApi, type Alert, type AlertCreate, type AlertUpdate } from '@/api/alerts';
+import { alertsApi, type AlertCreate, type AlertUpdate } from '@/api/alerts';
 
 /**
  * Hook pour gérer les alertes

@@ -17,11 +17,11 @@ const alertSchema = z.object({
     email: z.boolean(),
   }),
   recipients: z.object({
-    whatsapp_numbers: z.array(z.string()).default([]),
-    emails: z.array(z.string()).default([]),
+    whatsapp_numbers: z.array(z.string()),
+    emails: z.array(z.string()),
   }),
-  conditions: z.record(z.any()).default({}),
-  is_active: z.boolean().default(true),
+  conditions: z.record(z.string(), z.any()),
+  is_active: z.boolean(),
 });
 
 type AlertFormData = z.infer<typeof alertSchema>;
