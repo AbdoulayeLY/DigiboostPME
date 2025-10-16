@@ -88,6 +88,39 @@ class AlertResponse(AlertBase):
 
     model_config = {"from_attributes": True}
 
+    @field_validator('alert_type', mode='before')
+    def migrate_alert_type(cls, v):
+        """Migrer anciens types d'alerte vers nouveaux types."""
+        migration_map = {
+            'OUT_OF_STOCK': 'RUPTURE_STOCK',
+            'SALES_TARGET': 'BAISSE_TAUX_SERVICE'
+        }
+        return migration_map.get(v, v)
+
+    @field_validator('channels', mode='before')
+    def migrate_channels(cls, v):
+        """Migrer ancien format channels (list) vers nouveau format (dict)."""
+        if isinstance(v, list):
+            # Ancien format: ['whatsapp', 'email']
+            return {
+                'whatsapp': 'whatsapp' in v,
+                'email': 'email' in v
+            }
+        return v
+
+    @field_validator('recipients', mode='before')
+    def migrate_recipients(cls, v):
+        """Migrer ancien format recipients (list) vers nouveau format (dict)."""
+        if isinstance(v, list):
+            # Séparer numéros de téléphone et emails
+            whatsapp_numbers = [r for r in v if r.startswith('+')]
+            emails = [r for r in v if '@' in r]
+            return {
+                'whatsapp_numbers': whatsapp_numbers,
+                'emails': emails
+            }
+        return v
+
 
 class AlertListResponse(BaseModel):
     """Schéma liste d'alertes."""

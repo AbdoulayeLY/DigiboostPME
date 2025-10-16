@@ -117,6 +117,31 @@ async def create_alert(
     """
     logger.info(f"Creating alert for tenant {tenant_id}: {alert_data.name}")
 
+    # Validation 1: Type d'alerte valide
+    valid_types = ["RUPTURE_STOCK", "LOW_STOCK", "BAISSE_TAUX_SERVICE"]
+    if alert_data.alert_type not in valid_types:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Invalid alert_type. Must be one of: {', '.join(valid_types)}"
+        )
+
+    # Validation 2: Au moins un destinataire configuré
+    has_whatsapp = alert_data.recipients.get("whatsapp_numbers") and len(alert_data.recipients["whatsapp_numbers"]) > 0
+    has_email = alert_data.recipients.get("emails") and len(alert_data.recipients["emails"]) > 0
+
+    if not has_whatsapp and not has_email:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="At least one recipient (whatsapp_numbers or emails) is required"
+        )
+
+    # Validation 3: Au moins un canal activé
+    if not alert_data.channels.get("whatsapp") and not alert_data.channels.get("email"):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="At least one channel (whatsapp or email) must be enabled"
+        )
+
     try:
         # Créer l'alerte
         alert = Alert(
@@ -238,6 +263,48 @@ async def delete_alert(
     db.commit()
 
     logger.info(f"Alert {alert_id} deleted successfully")
+
+
+@router.patch("/{alert_id}/toggle", response_model=AlertRead)
+async def toggle_alert(
+    alert_id: UUID,
+    tenant_id: UUID = Depends(get_current_tenant_id),
+    db: Session = Depends(get_db)
+):
+    """
+    Activer/désactiver une alerte (toggle is_active).
+
+    Args:
+        alert_id: UUID de l'alerte
+        tenant_id: UUID du tenant (extrait du JWT)
+        db: Session database
+
+    Returns:
+        L'alerte avec le statut modifié
+
+    Raises:
+        HTTPException 404: Si l'alerte n'existe pas
+    """
+    logger.info(f"Toggling alert {alert_id} for tenant {tenant_id}")
+
+    alert = db.query(Alert).filter(
+        Alert.id == alert_id,
+        Alert.tenant_id == tenant_id
+    ).first()
+
+    if not alert:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Alert {alert_id} not found"
+        )
+
+    # Inverser le statut is_active
+    alert.is_active = not alert.is_active
+    db.commit()
+    db.refresh(alert)
+
+    logger.info(f"Alert {alert_id} toggled to is_active={alert.is_active}")
+    return alert
 
 
 @router.get("/history/", response_model=List[AlertHistoryRead])
