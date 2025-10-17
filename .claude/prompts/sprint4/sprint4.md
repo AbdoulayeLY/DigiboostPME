@@ -1445,7 +1445,7 @@ Créer guide utilisateur avec:
 - Tutoriels par fonctionnalité
 - FAQ
 - Captures d'écran
-- Vidéos démo (optionnel)
+
 
 SPÉCIFICATIONS:
 

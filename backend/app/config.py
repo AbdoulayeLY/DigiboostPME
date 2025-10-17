@@ -48,6 +48,10 @@ class Settings(BaseSettings):
     # Monitoring
     SENTRY_DSN: str = ""
 
+    # Reports
+    REPORTS_DIR: str = "reports"  # Dossier stockage rapports
+    REPORTS_RETENTION_DAYS: int = 90  # Durée conservation (jours)
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",

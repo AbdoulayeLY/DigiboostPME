@@ -7,7 +7,7 @@ from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 
 from app.config import settings
-from app.api.v1 import auth, dashboards, alerts
+from app.api.v1 import auth, dashboards, alerts, analytics, predictions, reports
 
 
 class TenantContextMiddleware(BaseHTTPMiddleware):
@@ -59,6 +59,17 @@ def create_application() -> FastAPI:
     app.include_router(auth.router, prefix=settings.API_V1_PREFIX)
     app.include_router(dashboards.router, prefix=settings.API_V1_PREFIX)
     app.include_router(alerts.router, prefix=settings.API_V1_PREFIX)
+    app.include_router(
+        analytics.router,
+        prefix=f"{settings.API_V1_PREFIX}/analytics",
+        tags=["Analytics"]
+    )
+    app.include_router(
+        predictions.router,
+        prefix=f"{settings.API_V1_PREFIX}/predictions",
+        tags=["Predictions"]
+    )
+    app.include_router(reports.router, prefix=settings.API_V1_PREFIX)
 
     # Routes de base
     @app.get("/")

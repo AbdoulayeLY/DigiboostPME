@@ -13,6 +13,7 @@ import PrevisionsPage from '@/pages/PrevisionsPage';
 import AlertesPage from '@/pages/AlertesPage';
 import AlertHistoryPage from '@/pages/AlertHistoryPage';
 import ParametresPage from '@/pages/ParametresPage';
+import RapportsPage from '@/pages/RapportsPage';
 
 export const router = createBrowserRouter([
   {
@@ -57,6 +58,10 @@ export const router = createBrowserRouter([
           {
             path: '/alertes/history',
             element: <AlertHistoryPage />,
+          },
+          {
+            path: '/rapports',
+            element: <RapportsPage />,
           },
           {
             path: '/parametres',

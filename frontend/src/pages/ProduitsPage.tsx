@@ -1,15 +1,10 @@
 /**
- * Page Produits (placeholder)
+ * Page Produits - Dashboard Gestion Stock Détaillée (Prompt 3.4)
  */
+import { StockDetailDashboard } from '@/features/stock/components/StockDetailDashboard';
+
 export const ProduitsPage = () => {
-  return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-bold text-gray-900">Gestion des Produits</h1>
-      <div className="bg-white p-6 rounded-lg shadow">
-        <p className="text-gray-600">Page en cours de construction...</p>
-      </div>
-    </div>
-  );
+  return <StockDetailDashboard />;
 };
 
 export default ProduitsPage;

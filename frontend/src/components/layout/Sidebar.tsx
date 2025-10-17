@@ -10,6 +10,7 @@ import {
   Users,
   TrendingUp,
   AlertCircle,
+  FileText,
   Settings,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -56,6 +57,11 @@ const navigationItems: NavItem[] = [
     name: 'Alertes',
     path: '/alertes',
     icon: <AlertCircle size={20} />,
+  },
+  {
+    name: 'Rapports',
+    path: '/rapports',
+    icon: <FileText size={20} />,
   },
   {
     name: 'Parametres',

@@ -48,12 +48,31 @@ celery_app.conf.beat_schedule = {
             'expires': 120
         }
     },
+
+    # Générer rapports mensuels le 1er de chaque mois à 08:00
+    'generate-monthly-reports': {
+        'task': 'app.tasks.report_tasks.generate_monthly_reports',
+        'schedule': crontab(day_of_month='1', hour='8', minute='0'),  # 1er du mois à 8h
+        'options': {
+            'queue': 'reports'
+        }
+    },
+
+    # Nettoyer anciens rapports tous les jours à 02:00
+    'cleanup-old-reports': {
+        'task': 'app.tasks.report_tasks.cleanup_old_reports',
+        'schedule': crontab(hour='2', minute='0'),  # Tous les jours à 2h
+        'options': {
+            'queue': 'maintenance'
+        }
+    },
 }
 
 # Routes (queues)
 celery_app.conf.task_routes = {
     'app.tasks.alert_tasks.*': {'queue': 'alerts'},
     'app.tasks.dashboard_tasks.*': {'queue': 'maintenance'},
+    'app.tasks.report_tasks.*': {'queue': 'reports'},
 }
 
 # Auto-découvrir tâches dans modules

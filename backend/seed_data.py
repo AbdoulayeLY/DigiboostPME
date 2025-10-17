@@ -180,35 +180,127 @@ def create_products(db: Session, tenant_id: uuid.UUID, categories: list, supplie
     """Creer des produits avec stock"""
     print("Creation des produits...")
     products_data = [
-        # Alimentation
+        # Alimentation (15 produits)
         {"code": "RIZ001", "name": "Riz Brisure 50kg", "category_idx": 0, "supplier_idx": 1,
          "purchase_price": 18000, "sale_price": 22000, "unit": "sac", "current_stock": 45, "min_stock": 20, "max_stock": 100},
+        {"code": "RIZ002", "name": "Riz Parfume 25kg", "category_idx": 0, "supplier_idx": 1,
+         "purchase_price": 15000, "sale_price": 19000, "unit": "sac", "current_stock": 25, "min_stock": 15, "max_stock": 60},
         {"code": "HUILE001", "name": "Huile Vegetale 5L", "category_idx": 0, "supplier_idx": 0,
          "purchase_price": 4500, "sale_price": 5500, "unit": "bidon", "current_stock": 30, "min_stock": 15, "max_stock": 50},
+        {"code": "HUILE002", "name": "Huile Arachide 1L", "category_idx": 0, "supplier_idx": 0,
+         "purchase_price": 1200, "sale_price": 1500, "unit": "bouteille", "current_stock": 80, "min_stock": 30, "max_stock": 120},
         {"code": "SUCRE001", "name": "Sucre 50kg", "category_idx": 0, "supplier_idx": 1,
          "purchase_price": 25000, "sale_price": 30000, "unit": "sac", "current_stock": 8, "min_stock": 10, "max_stock": 40},
+        {"code": "SUCRE002", "name": "Sucre Morceaux 1kg", "category_idx": 0, "supplier_idx": 1,
+         "purchase_price": 800, "sale_price": 1000, "unit": "paquet", "current_stock": 150, "min_stock": 50, "max_stock": 200},
+        {"code": "FARINE001", "name": "Farine de Ble 50kg", "category_idx": 0, "supplier_idx": 1,
+         "purchase_price": 20000, "sale_price": 25000, "unit": "sac", "current_stock": 18, "min_stock": 12, "max_stock": 50},
+        {"code": "PATES001", "name": "Pates Alimentaires 500g", "category_idx": 0, "supplier_idx": 1,
+         "purchase_price": 350, "sale_price": 500, "unit": "paquet", "current_stock": 200, "min_stock": 80, "max_stock": 300},
+        {"code": "TOMATE001", "name": "Concentre Tomate 400g", "category_idx": 0, "supplier_idx": 0,
+         "purchase_price": 600, "sale_price": 800, "unit": "boite", "current_stock": 90, "min_stock": 40, "max_stock": 150},
+        {"code": "LAIT001", "name": "Lait Poudre Nido 900g", "category_idx": 0, "supplier_idx": 0,
+         "purchase_price": 4500, "sale_price": 5500, "unit": "boite", "current_stock": 35, "min_stock": 20, "max_stock": 80},
+        {"code": "CAFE001", "name": "Cafe Touba 500g", "category_idx": 0, "supplier_idx": 0,
+         "purchase_price": 2000, "sale_price": 2500, "unit": "paquet", "current_stock": 45, "min_stock": 25, "max_stock": 100},
+        {"code": "THE001", "name": "The Lipton 100 sachets", "category_idx": 0, "supplier_idx": 0,
+         "purchase_price": 1800, "sale_price": 2200, "unit": "boite", "current_stock": 28, "min_stock": 15, "max_stock": 60},
+        {"code": "SEL001", "name": "Sel Iode 1kg", "category_idx": 0, "supplier_idx": 1,
+         "purchase_price": 250, "sale_price": 350, "unit": "paquet", "current_stock": 120, "min_stock": 50, "max_stock": 200},
+        {"code": "RIZ003", "name": "Riz Basmati 10kg", "category_idx": 0, "supplier_idx": 1,
+         "purchase_price": 8000, "sale_price": 10000, "unit": "sac", "current_stock": 0, "min_stock": 8, "max_stock": 30},
+        {"code": "HARICOT001", "name": "Haricots Blancs 1kg", "category_idx": 0, "supplier_idx": 1,
+         "purchase_price": 900, "sale_price": 1200, "unit": "paquet", "current_stock": 65, "min_stock": 30, "max_stock": 100},
+        {"code": "POISSON001", "name": "Poisson Seche 1kg", "category_idx": 0, "supplier_idx": 1,
+         "purchase_price": 3500, "sale_price": 4500, "unit": "kg", "current_stock": 0, "min_stock": 10, "max_stock": 40},
 
-        # Boissons
+        # Boissons (12 produits)
         {"code": "EAU001", "name": "Eau Kirene 1.5L Pack 6", "category_idx": 1, "supplier_idx": 0,
          "purchase_price": 1800, "sale_price": 2200, "unit": "pack", "current_stock": 120, "min_stock": 50, "max_stock": 200},
+        {"code": "EAU002", "name": "Eau Minerale Evian 1L", "category_idx": 1, "supplier_idx": 0,
+         "purchase_price": 800, "sale_price": 1000, "unit": "bouteille", "current_stock": 95, "min_stock": 40, "max_stock": 150},
         {"code": "JUS001", "name": "Jus Pomme Happy 1L", "category_idx": 1, "supplier_idx": 0,
-         "purchase_price": 1200, "sale_price": 1500, "unit": "unite", "current_stock": 65, "min_stock": 30, "max_stock": 100},
+         "purchase_price": 1200, "sale_price": 1500, "unit": "bouteille", "current_stock": 65, "min_stock": 30, "max_stock": 100},
+        {"code": "JUS002", "name": "Jus Orange Tropicana 1L", "category_idx": 1, "supplier_idx": 0,
+         "purchase_price": 1400, "sale_price": 1800, "unit": "bouteille", "current_stock": 52, "min_stock": 25, "max_stock": 90},
+        {"code": "SODA001", "name": "Coca-Cola 1.5L", "category_idx": 1, "supplier_idx": 0,
+         "purchase_price": 900, "sale_price": 1200, "unit": "bouteille", "current_stock": 88, "min_stock": 40, "max_stock": 150},
+        {"code": "SODA002", "name": "Sprite 1L", "category_idx": 1, "supplier_idx": 0,
+         "purchase_price": 750, "sale_price": 1000, "unit": "bouteille", "current_stock": 72, "min_stock": 35, "max_stock": 120},
+        {"code": "SODA003", "name": "Fanta Orange 50cl", "category_idx": 1, "supplier_idx": 0,
+         "purchase_price": 400, "sale_price": 600, "unit": "bouteille", "current_stock": 145, "min_stock": 60, "max_stock": 200},
+        {"code": "BISSAP001", "name": "Jus Bissap Royal 1L", "category_idx": 1, "supplier_idx": 0,
+         "purchase_price": 1000, "sale_price": 1300, "unit": "bouteille", "current_stock": 38, "min_stock": 20, "max_stock": 80},
+        {"code": "GAZOZ001", "name": "Gazouz Citron Pack 6", "category_idx": 1, "supplier_idx": 0,
+         "purchase_price": 1500, "sale_price": 1800, "unit": "pack", "current_stock": 42, "min_stock": 20, "max_stock": 70},
+        {"code": "ENERGY001", "name": "Red Bull 250ml", "category_idx": 1, "supplier_idx": 0,
+         "purchase_price": 1200, "sale_price": 1500, "unit": "canette", "current_stock": 55, "min_stock": 25, "max_stock": 100},
+        {"code": "THE002", "name": "Ice Tea Peche 1L", "category_idx": 1, "supplier_idx": 0,
+         "purchase_price": 800, "sale_price": 1000, "unit": "bouteille", "current_stock": 48, "min_stock": 25, "max_stock": 90},
+        {"code": "LAIT002", "name": "Lait Liquide Fresh 1L", "category_idx": 1, "supplier_idx": 0,
+         "purchase_price": 1000, "sale_price": 1300, "unit": "brique", "current_stock": 0, "min_stock": 15, "max_stock": 60},
+        {"code": "YAOURT001", "name": "Yaourt Dolima Pack 4", "category_idx": 1, "supplier_idx": 0,
+         "purchase_price": 1500, "sale_price": 2000, "unit": "pack", "current_stock": 0, "min_stock": 20, "max_stock": 80},
 
-        # Hygiene
+        # Hygiene (10 produits)
         {"code": "SAV001", "name": "Savon Imperial x50", "category_idx": 2, "supplier_idx": 0,
          "purchase_price": 8500, "sale_price": 10500, "unit": "carton", "current_stock": 25, "min_stock": 10, "max_stock": 50},
+        {"code": "SAV002", "name": "Savon Cadum 150g", "category_idx": 2, "supplier_idx": 0,
+         "purchase_price": 600, "sale_price": 800, "unit": "unite", "current_stock": 95, "min_stock": 40, "max_stock": 150},
         {"code": "DET001", "name": "Detergent Omo 1kg", "category_idx": 2, "supplier_idx": 0,
-         "purchase_price": 2800, "sale_price": 3500, "unit": "paquet", "current_stock": 5, "min_stock": 15, "max_stock": 60},
+         "purchase_price": 2800, "sale_price": 3500, "unit": "paquet", "current_stock": 0, "min_stock": 15, "max_stock": 60},
+        {"code": "DET002", "name": "Ariel Lessive Poudre 500g", "category_idx": 2, "supplier_idx": 0,
+         "purchase_price": 1500, "sale_price": 2000, "unit": "paquet", "current_stock": 48, "min_stock": 25, "max_stock": 80},
+        {"code": "JAVEL001", "name": "Eau de Javel 1L", "category_idx": 2, "supplier_idx": 0,
+         "purchase_price": 500, "sale_price": 700, "unit": "bouteille", "current_stock": 72, "min_stock": 30, "max_stock": 120},
+        {"code": "DENT001", "name": "Dentifrice Signal 75ml", "category_idx": 2, "supplier_idx": 0,
+         "purchase_price": 900, "sale_price": 1200, "unit": "tube", "current_stock": 85, "min_stock": 35, "max_stock": 130},
+        {"code": "BROSSE001", "name": "Brosse a Dents Medium", "category_idx": 2, "supplier_idx": 0,
+         "purchase_price": 400, "sale_price": 600, "unit": "unite", "current_stock": 120, "min_stock": 50, "max_stock": 180},
+        {"code": "SHAM001", "name": "Shampooing Garnier 400ml", "category_idx": 2, "supplier_idx": 0,
+         "purchase_price": 2500, "sale_price": 3200, "unit": "bouteille", "current_stock": 32, "min_stock": 18, "max_stock": 70},
+        {"code": "PAPIER001", "name": "Papier Toilette x12", "category_idx": 2, "supplier_idx": 0,
+         "purchase_price": 3500, "sale_price": 4500, "unit": "pack", "current_stock": 28, "min_stock": 15, "max_stock": 60},
+        {"code": "EPONGE001", "name": "Eponges Vaisselle x10", "category_idx": 2, "supplier_idx": 0,
+         "purchase_price": 1200, "sale_price": 1500, "unit": "pack", "current_stock": 45, "min_stock": 20, "max_stock": 80},
 
-        # Electronique
+        # Electronique (8 produits)
         {"code": "TEL001", "name": "Telephone Samsung A14", "category_idx": 3, "supplier_idx": 2,
          "purchase_price": 85000, "sale_price": 105000, "unit": "unite", "current_stock": 12, "min_stock": 5, "max_stock": 20},
+        {"code": "TEL002", "name": "iPhone 13 128GB", "category_idx": 3, "supplier_idx": 2,
+         "purchase_price": 450000, "sale_price": 550000, "unit": "unite", "current_stock": 4, "min_stock": 3, "max_stock": 10},
+        {"code": "TEL003", "name": "Tecno Spark 10", "category_idx": 3, "supplier_idx": 2,
+         "purchase_price": 65000, "sale_price": 80000, "unit": "unite", "current_stock": 8, "min_stock": 5, "max_stock": 15},
         {"code": "CHAR001", "name": "Chargeur USB-C Rapide", "category_idx": 3, "supplier_idx": 2,
          "purchase_price": 5000, "sale_price": 7500, "unit": "unite", "current_stock": 35, "min_stock": 10, "max_stock": 50},
+        {"code": "ECOUT001", "name": "Ecouteurs Bluetooth", "category_idx": 3, "supplier_idx": 2,
+         "purchase_price": 8000, "sale_price": 12000, "unit": "unite", "current_stock": 22, "min_stock": 10, "max_stock": 40},
+        {"code": "CABLE001", "name": "Cable USB Type-C 2m", "category_idx": 3, "supplier_idx": 2,
+         "purchase_price": 2000, "sale_price": 3000, "unit": "unite", "current_stock": 58, "min_stock": 25, "max_stock": 100},
+        {"code": "CLEF001", "name": "Cle USB 32GB", "category_idx": 3, "supplier_idx": 2,
+         "purchase_price": 4500, "sale_price": 6500, "unit": "unite", "current_stock": 18, "min_stock": 12, "max_stock": 40},
+        {"code": "POW001", "name": "Power Bank 10000mAh", "category_idx": 3, "supplier_idx": 2,
+         "purchase_price": 12000, "sale_price": 16000, "unit": "unite", "current_stock": 14, "min_stock": 8, "max_stock": 30},
 
-        # Textile
+        # Textile (8 produits)
         {"code": "WAX001", "name": "Pagne Wax 6 yards", "category_idx": 4, "supplier_idx": 0,
-         "purchase_price": 12000, "sale_price": 18000, "unit": "piece", "current_stock": 20, "min_stock": 10, "max_stock": 40}
+         "purchase_price": 12000, "sale_price": 18000, "unit": "piece", "current_stock": 20, "min_stock": 10, "max_stock": 40},
+        {"code": "WAX002", "name": "Tissu Bazin Riche", "category_idx": 4, "supplier_idx": 0,
+         "purchase_price": 8000, "sale_price": 12000, "unit": "metre", "current_stock": 35, "min_stock": 15, "max_stock": 60},
+        {"code": "BASIN001", "name": "Bassin Grande Taille", "category_idx": 4, "supplier_idx": 0,
+         "purchase_price": 3500, "sale_price": 5000, "unit": "unite", "current_stock": 25, "min_stock": 12, "max_stock": 50},
+        {"code": "DRAPS001", "name": "Draps de Lit 2 Places", "category_idx": 4, "supplier_idx": 0,
+         "purchase_price": 8000, "sale_price": 12000, "unit": "set", "current_stock": 18, "min_stock": 10, "max_stock": 35},
+        {"code": "SERV001", "name": "Serviettes Bain x2", "category_idx": 4, "supplier_idx": 0,
+         "purchase_price": 4000, "sale_price": 6000, "unit": "pack", "current_stock": 32, "min_stock": 15, "max_stock": 60},
+        {"code": "TSHIRT001", "name": "T-Shirt Coton Homme", "category_idx": 4, "supplier_idx": 0,
+         "purchase_price": 2500, "sale_price": 4000, "unit": "unite", "current_stock": 45, "min_stock": 20, "max_stock": 80},
+        {"code": "BOUBOU001", "name": "Boubou Homme Brode", "category_idx": 4, "supplier_idx": 0,
+         "purchase_price": 15000, "sale_price": 22000, "unit": "unite", "current_stock": 8, "min_stock": 5, "max_stock": 20},
+        {"code": "FOULARD001", "name": "Foulard Femme", "category_idx": 4, "supplier_idx": 0,
+         "purchase_price": 1500, "sale_price": 2500, "unit": "unite", "current_stock": 52, "min_stock": 25, "max_stock": 90},
+        {"code": "MASQUE001", "name": "Masques Chirurgicaux x50", "category_idx": 2, "supplier_idx": 0,
+         "purchase_price": 2500, "sale_price": 3500, "unit": "boite", "current_stock": 0, "min_stock": 10, "max_stock": 50}
     ]
 
     products = []
@@ -286,32 +378,74 @@ def create_sales(db: Session, tenant_id: uuid.UUID, products: list) -> list:
     print("Creation des ventes...")
     sales = []
 
-    # Generer des ventes pour les 30 derniers jours
-    for _ in range(50):
-        product = random.choice(products)
-        days_ago = random.randint(0, 30)
-        quantity = Decimal(str(random.randint(1, 5)))
-        unit_price = product.sale_price
+    customer_names = [
+        "Mamadou Diop", "Aissatou Fall", "Cheikh Mbaye",
+        "Marieme Sow", "Boubacar Kane", "Fatou Diallo",
+        "Ousmane Sarr", "Aminata Ba", "Ibrahima Gueye",
+        "Khady Ndiaye", "Moussa Seck", "Awa Toure",
+        "Abdoulaye Sy", "Binta Faye", "Modou Diouf",
+        None, None  # Quelques ventes anonymes
+    ]
 
-        sale = Sale(
-            tenant_id=tenant_id,
-            product_id=product.id,
-            sale_date=datetime.now() - timedelta(days=days_ago),
-            quantity=quantity,
-            unit_price=unit_price,
-            total_amount=quantity * unit_price,
-            order_number=f"ORD-{random.randint(10000, 99999)}",
-            customer_name=random.choice([
-                "Mamadou Diop", "Aissatou Fall", "Cheikh Mbaye",
-                "Marieme Sow", "Boubacar Kane", None
-            ]),
-            status=random.choice(["completed", "completed", "completed", "pending"])
-        )
-        db.add(sale)
-        sales.append(sale)
+    # Generer des ventes pour les 90 derniers jours (pour avoir plus d'historique)
+    # Plus de ventes pour les produits populaires
+    print("  - Generation des ventes des 90 derniers jours...")
+
+    # Ventes quotidiennes (volume variable selon la recence)
+    for days_ago in range(90):
+        # BEAUCOUP plus de ventes pour les 7 derniers jours (20-35 ventes/jour)
+        if days_ago <= 7:
+            num_sales_today = random.randint(20, 35)
+        # Ventes moderees pour les 8-30 derniers jours (10-20 ventes/jour)
+        elif days_ago <= 30:
+            num_sales_today = random.randint(10, 20)
+        # Ventes normales pour les 31-90 jours (5-12 ventes/jour)
+        else:
+            num_sales_today = random.randint(5, 12)
+
+        sale_date = datetime.now() - timedelta(days=days_ago)
+
+        for _ in range(num_sales_today):
+            # Probabilite plus elevee pour certains produits (produits populaires)
+            if random.random() < 0.6:  # 60% de chances de vendre un produit populaire
+                # Favoriser boissons, alimentation de base
+                popular_categories = [0, 1]  # Alimentation et Boissons
+                cat_products = [p for p in products if products.index(p) < 27]  # Premiers produits
+                product = random.choice(cat_products) if cat_products else random.choice(products)
+            else:
+                product = random.choice(products)
+
+            # Quantite variable selon le type de produit
+            if product.unit in ["sac", "carton", "set"]:
+                quantity = Decimal(str(random.randint(1, 3)))
+            elif product.unit in ["pack", "boite"]:
+                quantity = Decimal(str(random.randint(1, 8)))
+            else:
+                quantity = Decimal(str(random.randint(1, 12)))
+
+            unit_price = product.sale_price
+
+            sale = Sale(
+                tenant_id=tenant_id,
+                product_id=product.id,
+                sale_date=sale_date,
+                quantity=quantity,
+                unit_price=unit_price,
+                total_amount=quantity * unit_price,
+                order_number=f"ORD-{random.randint(10000, 99999)}",
+                customer_name=random.choice(customer_names),
+                status=random.choice(["completed"] * 9 + ["pending"])  # 90% completed
+            )
+            db.add(sale)
+            sales.append(sale)
+
+            # Commit tous les 100 ventes pour performance
+            if len(sales) % 100 == 0:
+                db.commit()
+                print(f"    {len(sales)} ventes creees...")
 
     db.commit()
-    print(f"  ✓ {len(sales)} ventes creees")
+    print(f"  ✓ {len(sales)} ventes creees au total")
     return sales
 
 

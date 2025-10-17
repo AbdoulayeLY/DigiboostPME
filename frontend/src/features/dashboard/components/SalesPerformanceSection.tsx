@@ -2,10 +2,14 @@
  * Section Performance Ventes du dashboard
  */
 import { TrendingUp, ShoppingCart, Calendar } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 import { KPICard } from './KPICard';
 import { RevenueChart } from './RevenueChart';
 import type { SalesPerformance } from '@/types/api.types';
 import { formatCurrency, formatPercent } from '@/lib/utils';
+import { analyticsApi } from '@/api/analytics';
+import { format } from 'date-fns';
+import { fr } from 'date-fns/locale';
 
 interface SalesPerformanceSectionProps {
   data: SalesPerformance;
@@ -14,6 +18,13 @@ interface SalesPerformanceSectionProps {
 export const SalesPerformanceSection = ({
   data,
 }: SalesPerformanceSectionProps) => {
+  // Récupérer les vraies données d'évolution depuis l'API
+  const { data: salesEvolutionData } = useQuery({
+    queryKey: ['sales-evolution', 7],
+    queryFn: () => analyticsApi.getSalesEvolution(7),
+    staleTime: 30000, // 30 secondes
+  });
+
   // Calculer la tendance entre CA 7j et CA 30j
   const avgDaily7 = data.ca_7j / 7;
   const avgDaily30 = data.ca_30j / 30;
@@ -21,17 +32,11 @@ export const SalesPerformanceSection = ({
   const trendPercent =
     ((avgDaily7 - avgDaily30) / avgDaily30) * 100;
 
-  // Preparer les donnees pour le graphique (simulees pour l'instant)
-  // Dans une version future, le backend pourrait fournir ces donnees
-  const chartData = [
-    { date: 'J-7', revenue: data.ca_7j * 0.12 },
-    { date: 'J-6', revenue: data.ca_7j * 0.14 },
-    { date: 'J-5', revenue: data.ca_7j * 0.13 },
-    { date: 'J-4', revenue: data.ca_7j * 0.15 },
-    { date: 'J-3', revenue: data.ca_7j * 0.16 },
-    { date: 'J-2', revenue: data.ca_7j * 0.14 },
-    { date: 'J-1', revenue: data.ca_7j * 0.16 },
-  ];
+  // Préparer les données réelles pour le graphique
+  const chartData = salesEvolutionData?.data.map((day) => ({
+    date: format(new Date(day.date), 'EEE dd', { locale: fr }),
+    revenue: day.revenue,
+  })) || [];
 
   return (
     <div className="space-y-4">

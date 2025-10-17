@@ -283,7 +283,19 @@ class AlertService:
             )
             return True
 
-        # Si 80%+ des produits sont identiques, considérer comme duplicate
+        # Vérifier s'il y a de nouveaux produits
+        new_products = current_products - recent_products
+
+        # Si de nouveaux produits sont apparus, ne pas considérer comme duplicate
+        if len(new_products) > 0:
+            logger.debug(
+                f"New products detected for alert {alert_id}: "
+                f"{len(new_products)} new product(s)"
+            )
+            return False
+
+        # Si 80%+ des produits sont identiques et aucun nouveau produit,
+        # considérer comme duplicate
         if len(recent_products) > 0:
             overlap = len(recent_products & current_products)
             similarity = overlap / len(recent_products)
@@ -291,7 +303,7 @@ class AlertService:
             if similarity > 0.8:
                 logger.debug(
                     f"Duplicate detected for alert {alert_id}: "
-                    f"similarity {similarity:.2%}"
+                    f"similarity {similarity:.2%}, no new products"
                 )
                 return True
 

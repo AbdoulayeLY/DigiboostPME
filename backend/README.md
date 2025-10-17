@@ -211,9 +211,68 @@ Le système est conçu en multi-tenant avec isolation par `tenant_id` :
 
 ## 📝 Documentation
 
+### Documentation API
 - **API Docs**: http://localhost:8000/api/v1/docs (Swagger)
 - **ReDoc**: http://localhost:8000/api/v1/redoc
 - **Architecture**: Voir `.claude/context/01-architecture.md`
+
+### Documentation Sprint 2 - Système d'Alertes
+
+Le Sprint 2 a introduit un système complet d'alertes automatiques avec notifications WhatsApp. La documentation complète est disponible :
+
+#### 📚 Documents Disponibles
+
+| Document | Description | Temps de lecture |
+|----------|-------------|------------------|
+| [**DOCUMENTATION_INDEX.md**](./DOCUMENTATION_INDEX.md) | 📑 Index central - Point d'entrée de toute la documentation | 5 min |
+| [**SPRINT_2_RESUME.md**](./SPRINT_2_RESUME.md) | 📋 Résumé exécutif - Vue d'ensemble rapide | 5 min |
+| [**SPRINT_2_MODIFICATIONS.md**](./SPRINT_2_MODIFICATIONS.md) | 📖 Documentation technique complète - Détails d'implémentation | 30 min |
+| [**GUIDE_ALERTES.md**](./GUIDE_ALERTES.md) | 🛠️ Guide opérationnel - Commandes et troubleshooting | Référence |
+| [**VALIDATION_PROMPT_2.7.md**](./VALIDATION_PROMPT_2.7.md) | ✅ Rapport de validation QA | 10 min |
+
+#### 🚀 Par où commencer ?
+
+**Pour développeurs (Sprint 3)** :
+1. Commencer par [SPRINT_2_RESUME.md](./SPRINT_2_RESUME.md) (5 min)
+2. Lire [SPRINT_2_MODIFICATIONS.md](./SPRINT_2_MODIFICATIONS.md) Section 2 "Modifications Critiques" (15 min)
+3. Garder [GUIDE_ALERTES.md](./GUIDE_ALERTES.md) ouvert pendant le développement
+
+**Pour Product Owners / QA** :
+- [SPRINT_2_RESUME.md](./SPRINT_2_RESUME.md) + [VALIDATION_PROMPT_2.7.md](./VALIDATION_PROMPT_2.7.md)
+
+**Pour DevOps / Support** :
+- [GUIDE_ALERTES.md](./GUIDE_ALERTES.md) exclusivement
+
+#### 🎯 Fonctionnalités Implémentées
+
+- ✅ **Évaluation automatique** : Celery Beat toutes les 5 minutes
+- ✅ **3 types d'alertes** : Rupture de stock, Stock faible, Baisse taux de service
+- ✅ **Déduplication intelligente** : Détection automatique des nouveaux produits
+- ✅ **Notifications WhatsApp** : Via Twilio
+- ✅ **Interface de gestion** : `/alertes` et `/alertes/history`
+- ✅ **Auto-refresh** : Timeline mise à jour toutes les 60 secondes
+
+#### 🔧 Commandes Rapides (Système d'Alertes)
+
+```bash
+# Démarrer Celery Worker
+celery -A app.tasks.celery_app worker --loglevel=info --concurrency=2 --queues=celery,alerts,maintenance
+
+# Démarrer Celery Beat (planificateur)
+celery -A app.tasks.celery_app beat --loglevel=info
+
+# Tester manuellement les alertes
+python trigger_test_alerts.py
+
+# Monitoring avec Flower
+celery -A app.tasks.celery_app flower --port=5555
+# Ouvrir http://localhost:5555
+
+# Voir les logs
+tail -f logs/celery_worker.log
+```
+
+Pour plus de détails, consultez [DOCUMENTATION_INDEX.md](./DOCUMENTATION_INDEX.md).
 
 ## 🤝 Contribution
 

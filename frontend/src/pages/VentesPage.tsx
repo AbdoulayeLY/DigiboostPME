@@ -1,15 +1,10 @@
 /**
- * Page Ventes (placeholder)
+ * Page Ventes - Dashboard Analyse Ventes (Prompt 3.5)
  */
+import { SalesAnalysisDashboard } from '@/features/sales/components/SalesAnalysisDashboard';
+
 export const VentesPage = () => {
-  return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-bold text-gray-900">Gestion des Ventes</h1>
-      <div className="bg-white p-6 rounded-lg shadow">
-        <p className="text-gray-600">Page en cours de construction...</p>
-      </div>
-    </div>
-  );
+  return <SalesAnalysisDashboard />;
 };
 
 export default VentesPage;
