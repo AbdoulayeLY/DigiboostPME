@@ -13,6 +13,9 @@ from app.tasks.report_tasks import (
 from app.tasks.dashboard_tasks import (
     refresh_dashboard_views,
 )
+from app.tasks.onboarding import (
+    import_tenant_data,
+)
 
 __all__ = [
     "celery_app",
@@ -21,4 +24,5 @@ __all__ = [
     "generate_monthly_reports",
     "cleanup_old_reports",
     "refresh_dashboard_views",
+    "import_tenant_data",
 ]

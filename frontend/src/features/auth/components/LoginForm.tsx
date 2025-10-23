@@ -1,10 +1,15 @@
 /**
  * Formulaire de connexion
  */
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useAuth } from '../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
+import { authApi } from '@/api/auth';
+import { useAuthStore } from '@/stores/authStore';
+import { ChangePasswordModal } from './ChangePasswordModal';
+import { toast } from 'sonner';
 
 // Schema de validation avec Zod
 const loginSchema = z.object({
@@ -20,7 +25,13 @@ const loginSchema = z.object({
 type LoginFormData = z.infer<typeof loginSchema>;
 
 export const LoginForm = () => {
-  const { login, isLoading, error } = useAuth();
+  const navigate = useNavigate();
+  const { setAuth } = useAuthStore();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [tempToken, setTempToken] = useState<string>('');
+  const [userEmail, setUserEmail] = useState<string>('');
 
   const {
     register,
@@ -30,13 +41,73 @@ export const LoginForm = () => {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = (data: LoginFormData) => {
-    login(data);
+  const onSubmit = async (data: LoginFormData) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await authApi.login(data);
+
+      // Vérifier si changement de mot de passe requis
+      if (response.must_change_password && response.temp_token) {
+        setTempToken(response.temp_token);
+        setUserEmail(data.email);
+        setShowPasswordModal(true);
+        toast.info('Changement de mot de passe requis', {
+          description: 'Vous devez changer votre mot de passe par défaut',
+        });
+      } else {
+        // Login normal - sauvegarder tokens et récupérer utilisateur
+        localStorage.setItem('access_token', response.access_token);
+        localStorage.setItem('refresh_token', response.refresh_token);
+
+        const userData = await authApi.getCurrentUser();
+        setAuth(userData, response.access_token, response.refresh_token);
+
+        navigate('/dashboard');
+      }
+    } catch (err: unknown) {
+      console.error('Erreur login:', err);
+      setError(
+        'Identifiants incorrects ou erreur de connexion. Veuillez réessayer.'
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handlePasswordChangeSuccess = async (
+    accessToken: string,
+    refreshToken: string
+  ) => {
+    // Sauvegarder les nouveaux tokens
+    localStorage.setItem('access_token', accessToken);
+    localStorage.setItem('refresh_token', refreshToken);
+
+    // Récupérer l'utilisateur et se connecter
+    try {
+      const userData = await authApi.getCurrentUser();
+      setAuth(userData, accessToken, refreshToken);
+      setShowPasswordModal(false);
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Erreur récupération utilisateur:', error);
+      toast.error('Erreur lors de la connexion après changement de mot de passe');
+    }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <div className="max-w-md w-full space-y-8">
+    <>
+      {showPasswordModal && (
+        <ChangePasswordModal
+          tempToken={tempToken}
+          onSuccess={handlePasswordChangeSuccess}
+          email={userEmail}
+        />
+      )}
+
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+        <div className="max-w-md w-full space-y-8">
         {/* Header */}
         <div className="text-center">
           <h2 className="text-3xl font-bold text-gray-900">
@@ -129,6 +200,7 @@ export const LoginForm = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

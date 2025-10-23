@@ -14,6 +14,7 @@ import AlertesPage from '@/pages/AlertesPage';
 import AlertHistoryPage from '@/pages/AlertHistoryPage';
 import ParametresPage from '@/pages/ParametresPage';
 import RapportsPage from '@/pages/RapportsPage';
+import OnboardingWizardPage from '@/pages/OnboardingWizardPage';
 
 export const router = createBrowserRouter([
   {
@@ -23,6 +24,16 @@ export const router = createBrowserRouter([
   {
     path: '/login',
     element: <LoginForm />,
+  },
+  {
+    path: '/admin/onboarding',
+    element: <ProtectedRoute allowedRoles={['admin']} />,
+    children: [
+      {
+        index: true,
+        element: <OnboardingWizardPage />,
+      },
+    ],
   },
   {
     // Routes protegees avec layout

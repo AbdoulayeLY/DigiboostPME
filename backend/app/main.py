@@ -7,7 +7,8 @@ from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 
 from app.config import settings
-from app.api.v1 import auth, dashboards, alerts, analytics, predictions, reports
+from app.api.v1 import auth, dashboards, alerts, analytics, predictions, reports, onboarding
+from app.api.error_handlers import register_error_handlers
 
 
 class TenantContextMiddleware(BaseHTTPMiddleware):
@@ -55,6 +56,9 @@ def create_application() -> FastAPI:
     # Middleware tenant context
     app.add_middleware(TenantContextMiddleware)
 
+    # Register custom error handlers
+    register_error_handlers(app)
+
     # Include API routers
     app.include_router(auth.router, prefix=settings.API_V1_PREFIX)
     app.include_router(dashboards.router, prefix=settings.API_V1_PREFIX)
@@ -70,6 +74,7 @@ def create_application() -> FastAPI:
         tags=["Predictions"]
     )
     app.include_router(reports.router, prefix=settings.API_V1_PREFIX)
+    app.include_router(onboarding.router, prefix=settings.API_V1_PREFIX)
 
     # Routes de base
     @app.get("/")

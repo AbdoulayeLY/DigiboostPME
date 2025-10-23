@@ -137,3 +137,34 @@ def get_password_hash(password: str) -> str:
         Hash du mot de passe
     """
     return pwd_context.hash(password)
+
+
+def create_temp_token(subject: str, tenant_id: UUID) -> str:
+    """
+    Crée un token JWT temporaire pour changement de mot de passe.
+
+    Ce token a une validité de 15 minutes et est utilisé uniquement
+    pour l'endpoint de changement de mot de passe à la première connexion.
+
+    Args:
+        subject: Identifiant de l'utilisateur (user_id)
+        tenant_id: Identifiant du tenant
+
+    Returns:
+        Token JWT encodé temporaire
+    """
+    expire = datetime.utcnow() + timedelta(minutes=15)
+
+    to_encode = {
+        "exp": expire,
+        "sub": str(subject),
+        "tenant_id": str(tenant_id),
+        "type": "temp"
+    }
+
+    encoded_jwt = jwt.encode(
+        to_encode,
+        settings.SECRET_KEY,
+        algorithm=ALGORITHM
+    )
+    return encoded_jwt

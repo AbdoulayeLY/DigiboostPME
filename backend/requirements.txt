@@ -32,6 +32,12 @@ reportlab==4.0.7
 xlsxwriter==3.1.9
 matplotlib==3.8.2
 
+# Onboarding & Validation
+phonenumbers==8.13.27
+pandas==2.1.4
+celery-progress==0.4.0
+python-magic-bin==0.4.14  # python-magic avec binaries inclus
+
 # Logging
 python-json-logger==2.0.7
 
